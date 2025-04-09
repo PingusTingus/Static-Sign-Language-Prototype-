@@ -31,9 +31,16 @@ class DynamicGestureRecognizer:
         
         # Feature extraction parameters
         self.feature_window = 8  # Window size for feature extraction
+        # Calculate expected feature dimension
+        self.expected_features = self.feature_window * 2  # x,y coordinates
+        self.expected_features += (self.feature_window - 1) * 2  # velocities
+        self.expected_features += (self.feature_window - 2) * 2  # accelerations
+        self.expected_features += (self.feature_window - 2)  # angles
+        
         # Use MinMaxScaler instead of StandardScaler to avoid division issues
         self.scaler = MinMaxScaler(feature_range=(-1, 1))
-        
+        self.scaler_fitted = False
+
         # Get base directory for model loading/saving
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         
@@ -47,94 +54,48 @@ class DynamicGestureRecognizer:
         """Extract features from point history for dynamic gesture recognition"""
         if len(point_history) < self.feature_window:
             return None
-            
-        features = []
-        points = np.array(point_history)
-        
-        # 1. Velocity features (with safety checks)
-        velocities = np.diff(points, axis=0)
-        # Handle empty velocities array
-        if len(velocities) == 0:
-            velocities = np.zeros((1, 2))
-        
-        # Mean velocity with safety check
-        mean_vel = np.mean(velocities, axis=0)
-        mean_vel = np.nan_to_num(mean_vel, nan=0.0, posinf=0.0, neginf=0.0)
-        features.extend(mean_vel)
-        
-        # Standard deviation with safety check
-        std_vel = np.std(velocities, axis=0)
-        std_vel = np.nan_to_num(std_vel, nan=0.0, posinf=0.0, neginf=0.0)
-        features.extend(std_vel)
-        
-        # 2. Direction changes (with safety checks)
-        if len(velocities) > 0:
-            # Use a small epsilon to avoid division by zero
-            epsilon = 1e-10
-            # Calculate direction as unit vectors
-            magnitudes = np.sqrt(np.sum(velocities**2, axis=1))
-            magnitudes = np.maximum(magnitudes, epsilon)  # Avoid division by zero
-            directions = velocities / magnitudes[:, np.newaxis]
-            
-            # Calculate direction changes
-            direction_changes = np.diff(np.sign(directions), axis=0)
-            direction_changes = np.nan_to_num(direction_changes, nan=0.0, posinf=0.0, neginf=0.0)
-            features.extend(np.sum(np.abs(direction_changes), axis=0))
-        else:
-            features.extend([0.0, 0.0])
-        
-        # 3. Path curvature (completely rewritten with safety checks)
-        if len(points) > 2:
-            # Calculate first derivatives
-            dx = np.gradient(points[:, 0])
-            dy = np.gradient(points[:, 1])
-            
-            # Calculate second derivatives
-            d2x = np.gradient(dx)
-            d2y = np.gradient(dy)
-            
-            # Calculate curvature using a safer formula
-            # k = |x'y'' - y'x''| / (x'^2 + y'^2)^(3/2)
-            numerator = np.abs(dx * d2y - dy * d2x)
-            denominator = (dx * dx + dy * dy) ** 1.5
-            
-            # Replace zeros in denominator with a small number
-            denominator = np.maximum(denominator, 1e-10)
-            
-            # Calculate curvature
-            curvature = self.safe_divide(numerator, denominator)
-            
-            # Handle any remaining NaN or inf values
-            curvature = np.nan_to_num(curvature, nan=0.0, posinf=0.0, neginf=0.0)
-            
-            # Add curvature features
-            features.extend([np.mean(curvature), np.max(curvature)])
-        else:
-            features.extend([0.0, 0.0])
-        
-        # 4. Spatial features (with safety checks)
-        x_range = np.max(points[:, 0]) - np.min(points[:, 0])
-        y_range = np.max(points[:, 1]) - np.min(points[:, 1])
-        
-        # Calculate speed with safety check
-        if len(velocities) > 0:
-            speed = np.mean(np.sqrt(np.sum(velocities ** 2, axis=1)))
-        else:
-            speed = 0.0
-        
-        # Replace any NaN or inf values with 0
-        x_range = np.nan_to_num(x_range, nan=0.0, posinf=0.0, neginf=0.0)
-        y_range = np.nan_to_num(y_range, nan=0.0, posinf=0.0, neginf=0.0)
-        speed = np.nan_to_num(speed, nan=0.0, posinf=0.0, neginf=0.0)
-        
-        features.extend([x_range, y_range, speed])
-        
-        # Convert to numpy array and handle any remaining NaN values
-        features = np.array(features, dtype=np.float32)
-        features = np.nan_to_num(features, nan=0.0, posinf=0.0, neginf=0.0)
-        
-        return features
-    
+
+        try:
+            # Convert point history to numpy array
+            points = np.array(point_history[-self.feature_window:])  # Take only the last feature_window points
+
+            # Calculate velocities and accelerations
+            velocities = np.diff(points, axis=0)
+            accelerations = np.diff(velocities, axis=0)
+
+            # Calculate angles between consecutive points
+            angles = []
+            for i in range(len(points) - 2):
+                v1 = points[i + 1] - points[i]
+                v2 = points[i + 2] - points[i + 1]
+                angle = np.arctan2(np.cross(v1, v2), np.dot(v1, v2))
+                angles.append(angle)
+
+            # Combine features
+            features = np.concatenate([
+                points.flatten(),  # Position features (feature_window * 2)
+                velocities.flatten(),  # Velocity features ((feature_window-1) * 2)
+                accelerations.flatten(),  # Acceleration features ((feature_window-2) * 2)
+                np.array(angles)  # Angle features (feature_window-2)
+            ])
+
+            # Ensure consistent feature dimension
+            if len(features) != self.expected_features:
+                # Pad or truncate to expected dimension
+                if len(features) < self.expected_features:
+                    features = np.pad(features, (0, self.expected_features - len(features)))
+                else:
+                    features = features[:self.expected_features]
+
+            # Handle any NaN or inf values
+            features = np.nan_to_num(features, nan=0.0, posinf=0.0, neginf=0.0)
+
+            return features
+
+        except Exception as e:
+            print(f"Error extracting features: {e}")
+            return None
+
     def process_frame(self, frame):
         """Process a single frame and return gesture information"""
         # Convert to RGB
@@ -199,10 +160,16 @@ class DynamicGestureRecognizer:
         # Replace any NaN or inf values
         X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
         
+        # Ensure X is 2D
+        if len(X.shape) > 2:
+            X = X.reshape(X.shape[0], -1)
+        
         # Normalize features with safety check
         try:
             # Fit the scaler on the training data
             self.scaler.fit(X)
+            self.scaler_fitted = True
+
             # Transform the data
             X = self.scaler.transform(X)
         except Exception as e:
@@ -215,21 +182,47 @@ class DynamicGestureRecognizer:
             X_range = np.maximum(X_range, 1e-10)
             X = (X - X_min) / X_range
         
+        # Get number of unique classes
+        num_classes = len(np.unique(y))
+        
         # Create and train model
         model = tf.keras.Sequential([
-            tf.keras.layers.Dense(64, activation='relu', input_shape=(X.shape[1],)),
+            tf.keras.layers.Input(shape=(X.shape[1],)),  # Use Input layer with correct shape
+            tf.keras.layers.Dense(128, activation='relu'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.Dropout(0.3),
+            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.BatchNormalization(),
             tf.keras.layers.Dropout(0.2),
             tf.keras.layers.Dense(32, activation='relu'),
-            tf.keras.layers.Dense(len(np.unique(y)), activation='softmax')
+            tf.keras.layers.Dense(num_classes, activation='softmax')
         ])
         
+        # Use a lower learning rate
+        optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+        
         model.compile(
-            optimizer='adam',
+            optimizer=optimizer,
             loss='sparse_categorical_crossentropy',
             metrics=['accuracy']
         )
         
-        model.fit(X, y, epochs=50, batch_size=32, validation_split=0.2)
+        # Add early stopping to prevent overfitting
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=5,
+            restore_best_weights=True
+        )
+        
+        # Train with validation split and early stopping
+        history = model.fit(
+            X, y, 
+            epochs=50, 
+            batch_size=32, 
+            validation_split=0.2,
+            callbacks=[early_stopping],
+            verbose=1
+        )
         
         return model
     
@@ -240,14 +233,32 @@ class DynamicGestureRecognizer:
         if not os.path.exists(models_dir):
             os.makedirs(models_dir)
             
+        # Add .keras extension to the path
+        if not path.endswith('.keras'):
+            path = path + '.keras'
+            
         # Save model and scaler
         model.save(path)
-        joblib.dump(self.scaler, path + '_scaler.pkl')
+        if self.scaler_fitted:
+            scaler_path = path.replace('.keras', '_scaler.pkl')
+            joblib.dump(self.scaler, scaler_path)
+        else:
+            print("Warning: Scaler not fitted, skipping scaler save")
     
     def load_model(self, path):
         """Load a trained model"""
+        # Add .keras extension if not present
+        if not path.endswith('.keras'):
+            path = path + '.keras'
+            
         model = tf.keras.models.load_model(path)
-        self.scaler = joblib.load(path + '_scaler.pkl')
+        scaler_path = path.replace('.keras', '_scaler.pkl')
+        if os.path.exists(scaler_path):
+            self.scaler = joblib.load(scaler_path)
+            self.scaler_fitted = True
+        else:
+            print("Warning: No scaler file found, using unfitted scaler")
+            self.scaler_fitted = False
         return model
 
 def main():
