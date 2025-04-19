@@ -1,0 +1,467 @@
+{
+  "name": "Fine",
+  "description": "",
+  "timestamp": "2025-04-15 13:27:15",
+  "duration": 1.678773832321167,
+  "frame_count": 52,
+  "components": [
+    {
+      "timestamp": 0.8122985363006592,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.7793571352958679,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 0.8777258396148682,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.538813591003418,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 0.9404125213623047,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.6049112677574158,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.0035247802734375,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.6327247619628906,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.0627591609954834,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.6060954928398132,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.1257233619689941,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.5975673198699951,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.1863961219787598,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.5618898272514343,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.251652479171753,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.539190948009491,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.3118467330932617,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.5946673154830933,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.3767261505126953,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.5203408598899841,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.4373173713684082,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.4821529984474182,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.500300407409668,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.4906640648841858,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.578411340713501,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.6173582673072815,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.578411340713501,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.5259865522384644,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.6362226009368896,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.4874945878982544,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.7011332511901855,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.4766613245010376,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.763214111328125,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "up",
+      "confidence": 0.5083333849906921,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.824002742767334,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5256420969963074,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.9019334316253662,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.6366949081420898,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.9029343128204346,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.4891572892665863,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 1.946608066558838,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.5019631385803223,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.0095975399017334,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "left",
+      "confidence": 0.47646820545196533,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.072482109069824,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.5045798420906067,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.1338131427764893,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5534349083900452,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.1964402198791504,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5061360597610474,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.2592060565948486,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.4501942992210388,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.3218026161193848,
+      "handshape": "b",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5101682543754578,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.3816840648651123,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5425109267234802,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.444791793823242,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5510287284851074,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.5071637630462646,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.5856087803840637,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.5678930282592773,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.604513943195343,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.629312753677368,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.620516836643219,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.692288875579834,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6390838623046875,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.7528107166290283,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6363056302070618,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.8159589767456055,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6363528966903687,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.878469705581665,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6484867930412292,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 2.941269636154175,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6346727013587952,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.002133369445801,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6210419535636902,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.061955451965332,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6568713784217834,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.1316614151000977,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6740226745605469,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.202474594116211,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.5607840418815613,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.2624423503875732,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.629798412322998,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.3274569511413574,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.6458033323287964,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.3896002769470215,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "confidence": 0.6719674468040466,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.451617479324341,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.6820549964904785,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.517862319946289,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.6098715662956238,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.591186285018921,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.6189015507698059,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.6527645587921143,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.6200436949729919,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.728393077850342,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.6478714942932129,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.791832208633423,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.6606736183166504,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.8665637969970703,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.7669908404350281,
+      "handedness": "Right"
+    },
+    {
+      "timestamp": 3.9267027378082275,
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "confidence": 0.8489573001861572,
+      "handedness": "Right"
+    }
+  ],
+  "simplified_sequence": [
+    {
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "handedness": "Right",
+      "confidence": 0.5607840418815613,
+      "start_time": 0,
+      "end_time": 0.24914288520812988,
+      "duration": 0.24914288520812988
+    },
+    {
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "right",
+      "handedness": "Right",
+      "confidence": 0.5425109267234802,
+      "start_time": 0.24914288520812988,
+      "end_time": 1.0699334144592285,
+      "duration": 0.8207905292510986
+    },
+    {
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "down",
+      "handedness": "Right",
+      "confidence": 0.6098715662956238,
+      "start_time": 1.0699334144592285,
+      "end_time": 1.478773832321167,
+      "duration": 0.4088404178619385
+    },
+    {
+      "handshape": "5",
+      "orientation": "back",
+      "movement": "stationary",
+      "handedness": "Right",
+      "confidence": 0.6098715662956238,
+      "start_time": 1.478773832321167,
+      "end_time": 1.678773832321167,
+      "duration": 0.2
+    }
+  ]
+}
