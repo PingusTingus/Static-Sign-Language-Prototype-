@@ -1,0 +1,115 @@
+{
+  "name": "good afternoon",
+  "description": "Feedback for gesture: good afternoon",
+  "timestamp": "2025-04-15 11:17:16",
+  "components": [
+    {
+      "handshape": "a",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.9502559900283813,
+      "duration": 0.2
+    },
+    {
+      "handshape": "a",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.5634616613388062,
+      "duration": 0.2
+    },
+    {
+      "handshape": "o",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.7036377787590027,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "up",
+      "confidence": 0.7241121530532837,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.7440980672836304,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "up",
+      "confidence": 0.8153426647186279,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "stationary",
+      "confidence": 0.730879008769989,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "down",
+      "confidence": 0.8496434688568115,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "stationary",
+      "confidence": 0.8265935778617859,
+      "duration": 0.2
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.6974319219589233,
+      "duration": 0.2
+    }
+  ],
+  "simplified_sequence": [
+    {
+      "handshape": "a",
+      "orientation": "back",
+      "movement": "right",
+      "confidence": 0.9502559900283813,
+      "start_time": 0,
+      "end_time": 0.2,
+      "duration": 0.2
+    },
+    {
+      "handshape": "a",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.5634616613388062,
+      "start_time": 0.2,
+      "end_time": 0.4,
+      "duration": 0.2
+    },
+    {
+      "handshape": "o",
+      "orientation": "front",
+      "movement": "right",
+      "confidence": 0.7036377787590027,
+      "start_time": 0.4,
+      "end_time": 0.6000000000000001,
+      "duration": 0.20000000000000007
+    },
+    {
+      "handshape": "c",
+      "orientation": "front",
+      "movement": "up",
+      "confidence": 0.8153426647186279,
+      "start_time": 1.0,
+      "end_time": 1.2000000000000002,
+      "duration": 0.20000000000000018
+    }
+  ]
+}
