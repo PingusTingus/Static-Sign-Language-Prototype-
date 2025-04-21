@@ -1,0 +1,86 @@
+{
+  "sentences": [
+    {
+      "text": "I am good afternoon",
+      "timestamp": "2025-04-15 14:45:12",
+      "gesture_count": 2
+    },
+    {
+      "text": "I am Fine",
+      "timestamp": "2025-04-15 14:46:03",
+      "gesture_count": 2
+    },
+    {
+      "text": "Good morning",
+      "timestamp": "2025-04-15 15:05:26",
+      "gesture_count": 1
+    },
+    {
+      "text": "I am I am",
+      "timestamp": "2025-04-15 15:05:52",
+      "gesture_count": 2
+    },
+    {
+      "text": "I am good morning",
+      "timestamp": "2025-04-15 15:06:07",
+      "gesture_count": 2
+    },
+    {
+      "text": "I am Fine",
+      "timestamp": "2025-04-15 15:06:33",
+      "gesture_count": 2
+    },
+    {
+      "text": "Good afternoon Fine",
+      "timestamp": "2025-04-15 15:07:55",
+      "gesture_count": 2
+    },
+    {
+      "text": "I am",
+      "timestamp": "2025-04-15 15:15:23",
+      "gesture_count": 1
+    },
+    {
+      "text": "Good afternoon",
+      "timestamp": "2025-04-15 15:19:49",
+      "gesture_count": 1
+    },
+    {
+      "text": "I am Fine",
+      "timestamp": "2025-04-15 15:20:11",
+      "gesture_count": 2
+    },
+    {
+      "text": "Good afternoon",
+      "timestamp": "2025-04-15 15:25:46",
+      "gesture_count": 1
+    },
+    {
+      "text": "Good evening",
+      "timestamp": "2025-04-15 15:25:59",
+      "gesture_count": 1
+    },
+    {
+      "text": "Fine",
+      "timestamp": "2025-04-15 15:26:17",
+      "gesture_count": 1
+    },
+    {
+      "text": "Good morning",
+      "timestamp": "2025-04-15 15:27:27",
+      "gesture_count": 1
+    },
+    {
+      "text": "I am Fine",
+      "timestamp": "2025-04-15 15:27:58",
+      "gesture_count": 2
+    },
+    {
+      "text": "Good afternoon",
+      "timestamp": "2025-04-15 15:37:48",
+      "gesture_count": 1
+    }
+  ],
+  "session_start": "2025-04-15 14:44:10",
+  "total_count": 16
+}

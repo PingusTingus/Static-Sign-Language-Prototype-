@@ -1,0 +1,12 @@
+Classification Report for TRANSFORMER model:
+                precision    recall  f1-score   support
+
+          Fine       1.00      1.00      1.00         6
+          I am       1.00      1.00      1.00         7
+good afternoon       1.00      0.89      0.94         9
+  good evening       0.86      1.00      0.92         6
+  good morning       1.00      1.00      1.00         7
+
+      accuracy                           0.97        35
+     macro avg       0.97      0.98      0.97        35
+  weighted avg       0.98      0.97      0.97        35

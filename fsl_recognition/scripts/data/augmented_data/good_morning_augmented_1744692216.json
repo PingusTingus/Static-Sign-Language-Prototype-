@@ -1,0 +1,307 @@
+{
+  "original_gesture": "good morning",
+  "timestamp": "2025-04-15 12:43:36",
+  "augmentation_count": 5,
+  "sequences": [
+    [
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9599639177322388,
+        "start_time": 0,
+        "end_time": 0.2,
+        "duration": 0.2
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9598336219787598,
+        "start_time": 0.2,
+        "end_time": 1.6000027656555176,
+        "duration": 1.4000027656555176
+      },
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "left",
+        "handedness": "Right",
+        "confidence": 0.907393217086792,
+        "start_time": 1.6000027656555176,
+        "end_time": 1.8457612991333008,
+        "duration": 0.2457585334777832
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.6258749961853027,
+        "start_time": 1.8457612991333008,
+        "end_time": 2.2329630851745605,
+        "duration": 0.38720178604125977
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 2.2329630851745605,
+        "end_time": 2.5612096786499023,
+        "duration": 0.3282465934753418
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 2.5612096786499023,
+        "end_time": 2.7612096786499025,
+        "duration": 0.2
+      }
+    ],
+    [
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9599639177322388,
+        "start_time": 0,
+        "end_time": 0.2,
+        "duration": 0.2
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9598336219787598,
+        "start_time": 0.2,
+        "end_time": 1.6000027656555176,
+        "duration": 1.4000027656555176
+      },
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "left",
+        "handedness": "Right",
+        "confidence": 0.907393217086792,
+        "start_time": 1.6000027656555176,
+        "end_time": 1.8457612991333008,
+        "duration": 0.2457585334777832
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.6258749961853027,
+        "start_time": 1.8457612991333008,
+        "end_time": 2.2329630851745605,
+        "duration": 0.38720178604125977
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 2.2329630851745605,
+        "end_time": 2.5612096786499023,
+        "duration": 0.3282465934753418
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 2.5612096786499023,
+        "end_time": 2.7612096786499025,
+        "duration": 0.2
+      }
+    ],
+    [
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9599639177322388,
+        "start_time": 0,
+        "end_time": 0.23924348474376123,
+        "duration": 0.23924348474376123
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9598336219787598,
+        "start_time": 0.23924348474376123,
+        "end_time": 1.913951186275408,
+        "duration": 1.6747077015316467
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.6258749961853027,
+        "start_time": 1.913951186275408,
+        "end_time": 2.67110934900671,
+        "duration": 0.7571581627313022
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 2.67110934900671,
+        "end_time": 3.063763643398258,
+        "duration": 0.39265429439154764
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.5939279198646545,
+        "start_time": 3.063763643398258,
+        "end_time": 3.3030071281420192,
+        "duration": 0.23924348474376123
+      }
+    ],
+    [
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 1.0,
+        "start_time": 0,
+        "end_time": 0.18604275507919563,
+        "duration": 0.18604275507919563
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9882466096559234,
+        "start_time": 0.18604275507919563,
+        "end_time": 1.4317116992568553,
+        "duration": 1.2456689441776596
+      },
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "left",
+        "handedness": "Right",
+        "confidence": 0.9428036478236083,
+        "start_time": 1.4317116992568553,
+        "end_time": 1.6592121249182368,
+        "duration": 0.22750042566138154
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.6928743943494052,
+        "start_time": 1.6592121249182368,
+        "end_time": 2.002656968467156,
+        "duration": 0.34344484354891897
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.5254039531164956,
+        "start_time": 2.002656968467156,
+        "end_time": 2.3179369408408705,
+        "duration": 0.3152799723737147
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.5306235832260561,
+        "start_time": 2.3179369408408705,
+        "end_time": 2.503767106714954,
+        "duration": 0.18583016587408366
+      }
+    ],
+    [
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 1.0,
+        "start_time": 0,
+        "end_time": 0.19958897695723982,
+        "duration": 0.19958897695723982
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.8841887484529127,
+        "start_time": 0.19958897695723982,
+        "end_time": 1.5389819590279465,
+        "duration": 1.3393929820707067
+      },
+      {
+        "handshape": "a",
+        "orientation": "back",
+        "movement": "left",
+        "handedness": "Right",
+        "confidence": 0.8682158184800889,
+        "start_time": 1.5389819590279465,
+        "end_time": 1.7934460431267671,
+        "duration": 0.2544640840988206
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.591907097932981,
+        "start_time": 1.7934460431267671,
+        "end_time": 2.180268983410463,
+        "duration": 0.3868229402836959
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.6246790640620428,
+        "start_time": 2.180268983410463,
+        "end_time": 2.515495105400778,
+        "duration": 0.3352261219903148
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.5697141882512673,
+        "start_time": 2.515495105400778,
+        "end_time": 2.7224524397634826,
+        "duration": 0.2069573343627048
+      }
+    ]
+  ]
+}

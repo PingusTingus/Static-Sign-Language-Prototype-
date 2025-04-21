@@ -1,0 +1,160 @@
+{
+  "good morning": {
+    "description": "",
+    "simplified_sequence": [
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.29633134603500366,
+        "start_time": 0,
+        "end_time": 0.353909969329834,
+        "duration": 0.353909969329834
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "left",
+        "handedness": "Right",
+        "confidence": 0.6490129828453064,
+        "start_time": 0.353909969329834,
+        "end_time": 0.5703988075256348,
+        "duration": 0.21648883819580078
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "right",
+        "handedness": "Right",
+        "confidence": 0.6619681715965271,
+        "start_time": 0.5703988075256348,
+        "end_time": 1.0028846263885498,
+        "duration": 0.43248581886291504
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.7242663502693176,
+        "start_time": 1.0028846263885498,
+        "end_time": 1.5119881629943848,
+        "duration": 0.509103536605835
+      },
+      {
+        "handshape": "5",
+        "orientation": "back",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.7508622407913208,
+        "start_time": 1.5119881629943848,
+        "end_time": 2.179354429244995,
+        "duration": 0.6673662662506104
+      }
+    ],
+    "file": "good_morning_1744635444.json"
+  },
+  "good afternoon": {
+    "description": "",
+    "simplified_sequence": [
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.31044110655784607,
+        "start_time": 0,
+        "end_time": 0.5865848064422607,
+        "duration": 0.5865848064422607
+      },
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.27680668234825134,
+        "start_time": 0.5865848064422607,
+        "end_time": 0.833930492401123,
+        "duration": 0.2473456859588623
+      },
+      {
+        "handshape": "c",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9,
+        "start_time": 0.833930492401123,
+        "end_time": 1.3373942375183105,
+        "duration": 0.5034637451171875
+      },
+      {
+        "handshape": "c",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9,
+        "start_time": 1.3373942375183105,
+        "end_time": 2.045018196105957,
+        "duration": 0.7076239585876465
+      }
+    ],
+    "file": "good_afternoon_1744635635.json"
+  },
+  "good evening": {
+    "description": "",
+    "simplified_sequence": [
+      {
+        "handshape": "a",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.28605708479881287,
+        "start_time": 0,
+        "end_time": 0.496751070022583,
+        "duration": 0.496751070022583
+      },
+      {
+        "handshape": "c",
+        "orientation": "front",
+        "movement": "down",
+        "handedness": "Right",
+        "confidence": 0.9,
+        "start_time": 0.496751070022583,
+        "end_time": 0.7006566524505615,
+        "duration": 0.20390558242797852
+      },
+      {
+        "handshape": "c",
+        "orientation": "front",
+        "movement": "up",
+        "handedness": "Right",
+        "confidence": 0.9,
+        "start_time": 0.7006566524505615,
+        "end_time": 0.949246883392334,
+        "duration": 0.24859023094177246
+      },
+      {
+        "handshape": "c",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9,
+        "start_time": 0.949246883392334,
+        "end_time": 1.211820125579834,
+        "duration": 0.2625732421875
+      },
+      {
+        "handshape": "o",
+        "orientation": "front",
+        "movement": "stationary",
+        "handedness": "Right",
+        "confidence": 0.9693520665168762,
+        "start_time": 1.211820125579834,
+        "end_time": 1.8940551280975342,
+        "duration": 0.6822350025177002
+      }
+    ],
+    "file": "good_evening_1744635762.json"
+  }
+}
