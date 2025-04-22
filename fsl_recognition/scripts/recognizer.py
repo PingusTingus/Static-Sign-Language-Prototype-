@@ -1224,24 +1224,91 @@ def main():
     global NO_HANDS_TIMEOUT
     NO_HANDS_TIMEOUT = args.no_hands_timeout
 
+    # Check for Raspberry Pi-specific optimizations
+    RPI_AVAILABLE = False
+    try:
+        # Check if we're running on a Raspberry Pi
+        with open('/proc/device-tree/model', 'r') as f:
+            model = f.read()
+            if 'Raspberry Pi' in model:
+                RPI_AVAILABLE = True
+                print(f"Detected Raspberry Pi hardware: {model.strip()}")
+
+                # Try to import RPi.GPIO for any hardware integration
+                try:
+                    import RPi.GPIO as GPIO
+                    print("GPIO access available")
+                except ImportError:
+                    print("GPIO module not available - skipping hardware integration")
+
+                # Set TensorFlow to use fewer threads on Raspberry Pi
+                import tensorflow as tf
+                tf.config.threading.set_inter_op_parallelism_threads(2)
+                tf.config.threading.set_intra_op_parallelism_threads(2)
+                print("TensorFlow thread count optimized for Raspberry Pi")
+    except:
+        pass
+
     # Initialize recognizer
     print("\n=== Initializing FSL Gesture Sentence System ===")
     recognizer = GestureRecognizer(model_type=args.model_type)
 
-    # Camera setup
-    cap = cv.VideoCapture(args.device)
-    cap.set(cv.CAP_PROP_FRAME_WIDTH, args.width)
-    cap.set(cv.CAP_PROP_FRAME_HEIGHT, args.height)
+    # Camera setup - optimized for Raspberry Pi
+    print(f"Setting up camera: device={args.device}")
 
-    # Initialize MediaPipe Hands
+    # PiCamera support
+    rpi_camera = None
+    cap = None
+
+    # Check for Raspberry Pi camera module using picamera2
+    if RPI_AVAILABLE:
+        try:
+            from picamera2 import Picamera2
+            print("Attempting to use Picamera2 API")
+            rpi_camera = Picamera2()
+            # Configure camera - lower resolution for better performance
+            camera_config = rpi_camera.create_video_configuration(
+                main={"size": (640, 480), "format": "RGB888"})
+            rpi_camera.configure(camera_config)
+            rpi_camera.start()
+            print("Picamera2 initialized successfully")
+        except (ImportError, Exception) as e:
+            print(f"Failed to initialize Picamera2: {e}")
+            rpi_camera = None
+
+    # Fall back to OpenCV camera if Picamera2 isn't available
+    if rpi_camera is None:
+        try:
+            # Use USB camera at /dev/video0
+            cap = cv.VideoCapture('/dev/video0')
+
+            # Lower resolution for Raspberry Pi
+            if RPI_AVAILABLE:
+                cap.set(cv.CAP_PROP_FRAME_WIDTH, 640)
+                cap.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
+            else:
+                cap.set(cv.CAP_PROP_FRAME_WIDTH, args.width)
+                cap.set(cv.CAP_PROP_FRAME_HEIGHT, args.height)
+
+            if not cap.isOpened():
+                raise Exception("Failed to open camera")
+
+            print(f"OpenCV camera initialized: {cap.get(cv.CAP_PROP_FRAME_WIDTH)}x{cap.get(cv.CAP_PROP_FRAME_HEIGHT)}")
+        except Exception as e:
+            print(f"Camera error: {e}")
+            sys.exit(1)
+
+    # Initialize MediaPipe Hands with lower model complexity for RPi
     mp_hands = mp.solutions.hands
+    model_selection = 0 if RPI_AVAILABLE else args.model_selection  # Use lighter model on RPi
     hands = mp_hands.Hands(
-        model_complexity=args.model_selection,
+        model_complexity=model_selection,
         max_num_hands=args.max_hands,
         min_detection_confidence=args.min_detection_confidence,
         min_tracking_confidence=args.min_tracking_confidence,
         static_image_mode=args.use_static_image_mode,
     )
+    print(f"MediaPipe hands initialized (model complexity: {model_selection})")
 
     # Initialize keypoint classifier
     keypoint_classifier = KeyPointClassifier()
@@ -1270,172 +1337,251 @@ def main():
     print("  R: Reset the recognizer")
     print("  Q/ESC: Quit")
 
+    # Add garbage collection for memory management
+    import gc
+
+    # Optimize stationary threshold for RPi
+    if RPI_AVAILABLE:
+        global STATIONARY_THRESHOLD
+        STATIONARY_THRESHOLD = 5  # Slightly lower threshold for RPi
+
     # Main loop
     hands_detected = False
-    while True:
-        # FPS calculation
-        fps = fps_calc.get()
+    try:
+        frame_count = 0
 
-        # Key handling
-        key = cv.waitKey(10)
-        if key == 27 or key == ord('q'):  # ESC or q
-            break
-        elif key == ord('r'):  # Reset recognizer
-            recognizer.reset()
-        elif key == ord('s'):  # Speak current sentence
-            sentence = recognizer.get_current_sentence()
-            if sentence:
-                print(f"Speaking: {sentence}")
-                recognizer.complete_sentence()
-        elif key == 8:  # Backspace - clear sentence
-            recognizer.clear_sentence()
-            print("Sentence cleared")
-        elif key == 32:  # Space - complete sentence
-            sentence = recognizer.complete_sentence()
-            if sentence:
-                print(f"Completed sentence: {sentence}")
+        while True:
+            # FPS calculation
+            fps = fps_calc.get()
 
-        # Camera capture
-        ret, image = cap.read()
-        if not ret:
-            break
+            # Key handling
+            key = cv.waitKey(10)
+            if key == 27 or key == ord('q'):  # ESC or q
+                break
+            elif key == ord('r'):  # Reset recognizer
+                recognizer.reset()
+            elif key == ord('s'):  # Speak current sentence
+                sentence = recognizer.get_current_sentence()
+                if sentence:
+                    print(f"Speaking: {sentence}")
+                    recognizer.complete_sentence()
+            elif key == 8:  # Backspace - clear sentence
+                recognizer.clear_sentence()
+                print("Sentence cleared")
+            elif key == 32:  # Space - complete sentence
+                sentence = recognizer.complete_sentence()
+                if sentence:
+                    print(f"Completed sentence: {sentence}")
 
-        image = cv.flip(image, 1)  # Mirror display for more intuitive interaction
-        debug_image = copy.deepcopy(image)
+            # Camera capture
+            if rpi_camera:
+                image = rpi_camera.capture_array()
+                # Convert BGR to RGB if needed
+                if image.shape[2] == 3:
+                    image = cv.cvtColor(image, cv.COLOR_RGB2BGR)
+                ret = True
+            else:
+                ret, image = cap.read()
 
-        # Color conversion for MediaPipe
-        image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-        results = hands.process(image_rgb)
+            # Check capture success
+            if not ret:
+                print("Failed to grab frame - attempting to reconnect camera")
+                if cap is not None:
+                    cap.release()
+                    time.sleep(0.5)
+                    cap = cv.VideoCapture('/dev/video0')
+                    if not cap.isOpened():
+                        print("Failed to reopen camera - exiting")
+                        break
+                continue
 
-        # Reset hands detected flag
-        hands_detected = False
+            # On RPi, process only every other frame for better performance
+            if RPI_AVAILABLE and (frame_count % 2 != 0):
+                frame_count += 1
+                continue
 
-        # Display FPS
-        cv.putText(debug_image, f"FPS: {fps}", (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-                   0.7, (0, 0, 0), 4, cv.LINE_AA)
-        cv.putText(debug_image, f"FPS: {fps}", (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-                   0.7, (255, 255, 255), 1, cv.LINE_AA)
+            frame_count += 1
 
-        # Process hand landmarks if detected
-        if results.multi_hand_landmarks:
-            hands_detected = True
+            image = cv.flip(image, 1)  # Mirror display for more intuitive interaction
+            debug_image = copy.deepcopy(image)
 
-            # Process all detected hands
-            for hand_idx, (hand_landmarks, handedness) in enumerate(
-                    zip(results.multi_hand_landmarks, results.multi_handedness)):
+            # Color conversion for MediaPipe
+            image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+            results = hands.process(image_rgb)
 
-                # Get handedness (left or right hand)
-                hand_type = handedness.classification[0].label  # "Left" or "Right"
+            # Reset hands detected flag
+            hands_detected = False
 
-                # Calculate bounding rectangle
-                brect = calc_bounding_rect(debug_image, hand_landmarks)
+            # Display FPS with outlined text for better visibility
+            cv.putText(debug_image, f"FPS: {fps}", (10, 30), cv.FONT_HERSHEY_SIMPLEX,
+                       0.7, (0, 0, 0), 4, cv.LINE_AA)
+            cv.putText(debug_image, f"FPS: {fps}", (10, 30), cv.FONT_HERSHEY_SIMPLEX,
+                       0.7, (255, 255, 255), 1, cv.LINE_AA)
 
-                # Extract landmarks
-                landmark_list = calc_landmark_list(debug_image, hand_landmarks)
+            # Process hand landmarks if detected
+            if results.multi_hand_landmarks:
+                hands_detected = True
 
-                # Store wrist position based on handedness
-                if landmark_list:
-                    if hand_type == "Right":
-                        wrist_positions_right.append(landmark_list[0])
-                    else:
-                        wrist_positions_left.append(landmark_list[0])
+                # Process all detected hands
+                for hand_idx, (hand_landmarks, handedness) in enumerate(
+                        zip(results.multi_hand_landmarks, results.multi_handedness)):
 
-                # Pre-process landmarks
-                pre_processed_landmark_list = pre_process_landmark(landmark_list)
+                    # Get handedness (left or right hand)
+                    hand_type = handedness.classification[0].label  # "Left" or "Right"
 
-                # Hand sign classification
-                hand_sign_id = -1
-                confidence = 0.0
+                    # Calculate bounding rectangle
+                    brect = calc_bounding_rect(debug_image, hand_landmarks)
 
-                if keypoint_classifier.model_loaded:
-                    # Get raw prediction
-                    hand_sign_id, confidence, result_array = keypoint_classifier(pre_processed_landmark_list)
+                    # Extract landmarks
+                    landmark_list = calc_landmark_list(debug_image, hand_landmarks)
 
-                    # Improve prediction particularly for O/C
-                    hand_sign_id, confidence = improve_prediction(
-                        hand_sign_id, confidence, result_array, landmark_list, keypoint_classifier_labels)
+                    # Store wrist position based on handedness
+                    if landmark_list:
+                        if hand_type == "Right":
+                            wrist_positions_right.append(landmark_list[0])
+                        else:
+                            wrist_positions_left.append(landmark_list[0])
 
-                    # Add to prediction history
-                    prediction_history.append(hand_sign_id)
+                    # Pre-process landmarks
+                    pre_processed_landmark_list = pre_process_landmark(landmark_list)
 
-                    # Get most common prediction for stability
-                    counter = Counter(prediction_history)
-                    most_common = counter.most_common(1)
-                    if most_common:
-                        hand_sign_id = most_common[0][0]
+                    # Hand sign classification
+                    hand_sign_id = -1
+                    confidence = 0.0
 
-                # Get handshape text (number or letter)
-                handshape_text = ""
-                if 0 <= hand_sign_id < len(keypoint_classifier_labels):
-                    handshape_text = keypoint_classifier_labels[hand_sign_id].lower()
+                    if keypoint_classifier.model_loaded:
+                        # Get raw prediction
+                        hand_sign_id, confidence, result_array = keypoint_classifier(pre_processed_landmark_list)
 
-                # Detect simple orientation
-                orientation = detect_orientation(landmark_list, hand_type)
+                        # Improve prediction particularly for O/C
+                        hand_sign_id, confidence = improve_prediction(
+                            hand_sign_id, confidence, result_array, landmark_list, keypoint_classifier_labels)
 
-                # Detect movement based on hand type
-                movement = "stationary"
-                if hand_type == "Right" and len(wrist_positions_right) > 5:
-                    movement = detect_simplified_movement(wrist_positions_right)
-                elif hand_type == "Left" and len(wrist_positions_left) > 5:
-                    movement = detect_simplified_movement(wrist_positions_left)
+                        # Add to prediction history
+                        prediction_history.append(hand_sign_id)
 
-                # Draw landmarks with handedness coloring
-                debug_image = draw_landmarks(debug_image, landmark_list, hand_type)
+                        # Get most common prediction for stability
+                        counter = Counter(prediction_history)
+                        most_common = counter.most_common(1)
+                        if most_common:
+                            hand_sign_id = most_common[0][0]
 
-                # Display hand sign, orientation and movement
-                debug_image = draw_info_text(
-                    debug_image,
-                    handshape_text.upper(),
-                    orientation,
-                    movement,
-                    brect,
-                    confidence,
-                    hand_type
-                )
+                    # Get handshape text (number or letter)
+                    handshape_text = ""
+                    if 0 <= hand_sign_id < len(keypoint_classifier_labels):
+                        handshape_text = keypoint_classifier_labels[hand_sign_id].lower()
 
-                # Update recognizer with components from first hand only
-                # Only use the first detected hand for gesture recognition
-                # Update recognizer with components from first hand only
-                if hand_idx == 0 and handshape_text:
-                    # Check if the hand is stationary for gesture recording
-                    is_stationary = (movement == "stationary")
-                    # Call update without location parameter
-                    recognizer.update(handshape_text, orientation, movement, confidence, is_stationary)
+                    # Detect simple orientation
+                    orientation = detect_orientation(landmark_list, hand_type)
 
-        # Handle no-hands detection
-        recognizer.handle_no_hands_detection(hands_detected)
+                    # Detect movement based on hand type
+                    movement = "stationary"
+                    if hand_type == "Right" and len(wrist_positions_right) > 5:
+                        movement = detect_simplified_movement(wrist_positions_right)
+                    elif hand_type == "Left" and len(wrist_positions_left) > 5:
+                        movement = detect_simplified_movement(wrist_positions_left)
 
-        # Draw prediction
-        prediction = recognizer.get_last_prediction()
-        debug_image = draw_prediction(debug_image, prediction)
+                    # Draw landmarks with handedness coloring
+                    debug_image = draw_landmarks(debug_image, landmark_list, hand_type)
 
-        # Draw state indicator - show if hand is stationary
-        is_stationary = False
-        if hands_detected and len(wrist_positions_right) > 5:
-            # Check if the main hand is stationary
-            movement = detect_simplified_movement(wrist_positions_right)
-            is_stationary = (movement == "stationary")
+                    # Display hand sign, orientation and movement
+                    debug_image = draw_info_text(
+                        debug_image,
+                        handshape_text.upper(),
+                        orientation,
+                        movement,
+                        brect,
+                        confidence,
+                        hand_type
+                    )
 
-        debug_image = draw_state_indicator(debug_image, recognizer.state,
-                                           recognizer.get_recording_duration(),
-                                           is_stationary)
+                    # Update recognizer with components from first hand only
+                    if hand_idx == 0 and handshape_text:
+                        # Check if the hand is stationary for gesture recording
+                        is_stationary = (movement == "stationary")
 
-        # Draw current sequence
-        debug_image = draw_sequence_status(debug_image, recognizer.get_current_sequence())
+                        # Add debug output for stationary detection
+                        if is_stationary:
+                            print(
+                                f"DEBUG: Stationary detected - counter: {recognizer.stationary_counter}/{STATIONARY_THRESHOLD}")
 
-        # Draw sentence display
-        debug_image = draw_sentence_display(debug_image, recognizer)
+                        # Call update without location parameter
+                        recognizer.update(handshape_text, orientation, movement, confidence, is_stationary)
 
-        # Draw help
-        debug_image = draw_help(debug_image)
+            # Handle no-hands detection
+            recognizer.handle_no_hands_detection(hands_detected)
 
-        # Show the image
-        cv.imshow('FSL Gesture Sentence Recognition', debug_image)
+            # Draw prediction
+            prediction = recognizer.get_last_prediction()
+            debug_image = draw_prediction(debug_image, prediction)
 
-    # Cleanup
-    cap.release()
-    cv.destroyAllWindows()
+            # Draw state indicator - show if hand is stationary
+            is_stationary = False
+            if hands_detected and len(wrist_positions_right) > 5:
+                # Check if the main hand is stationary
+                movement = detect_simplified_movement(wrist_positions_right)
+                is_stationary = (movement == "stationary")
+
+            debug_image = draw_state_indicator(debug_image, recognizer.state,
+                                               recognizer.get_recording_duration(),
+                                               is_stationary)
+
+            # Draw current sequence
+            debug_image = draw_sequence_status(debug_image, recognizer.get_current_sequence())
+
+            # Draw sentence display
+            debug_image = draw_sentence_display(debug_image, recognizer)
+
+            # Draw help
+            debug_image = draw_help(debug_image)
+
+            # Show the image - use a smaller window if running on Raspberry Pi
+            if RPI_AVAILABLE:
+                # Check if debug_image size is too large for RPi display
+                max_height = 768  # Common height for RPi displays
+                if debug_image.shape[0] > max_height:
+                    scale = max_height / debug_image.shape[0]
+                    new_width = int(debug_image.shape[1] * scale)
+                    new_height = int(debug_image.shape[0] * scale)
+                    debug_image = cv.resize(debug_image, (new_width, new_height))
+
+            cv.imshow('FSL Gesture Recognition', debug_image)
+
+            # Run garbage collection periodically to prevent memory issues on RPi
+            if frame_count % 100 == 0:
+                gc.collect()
+
+    except KeyboardInterrupt:
+        print("Interrupted by user")
+    except Exception as e:
+        print(f"Error in main loop: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        # Cleanup resources
+        print("Cleaning up resources...")
+        if rpi_camera:
+            rpi_camera.close()
+        else:
+            cap.release()
+
+        cv.destroyAllWindows()
+
+        # On Raspberry Pi, cleanup GPIO
+        if RPI_AVAILABLE:
+            try:
+                GPIO.cleanup()
+            except:
+                pass
+
+        print("Application terminated")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"Critical error: {e}")
+        import traceback
+
+        traceback.print_exc()
