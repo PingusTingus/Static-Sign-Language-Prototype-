@@ -432,7 +432,7 @@ class GestureRecognizer:
 
         current_time = time.time()
 
-        # Create current component tuple for comparison
+        # Create current component tuple for comparison (without location)
         current_component = (handshape.lower(), orientation, movement)
 
         # State machine
@@ -610,7 +610,7 @@ class GestureRecognizer:
             orientation_idx = orientation_dict.get(orientation, 0)
             movement_idx = movement_dict.get(movement, 0)
 
-            # Create feature vector
+            # Create feature vector (without location)
             state_features = [handshape_idx, orientation_idx, movement_idx, confidence, duration]
             sequence_features.append(state_features)
 
@@ -633,7 +633,9 @@ class GestureRecognizer:
         self.last_component = None
         self.stationary_time = 0
         self.last_prediction = None
+        self.recording_start_time = 0  # Make sure this is reset too
         print("Gesture recognizer reset")
+        return True
 
     def get_current_sequence(self):
         """Get the current sequence"""
@@ -809,7 +811,9 @@ def improve_prediction(hand_sign_id, confidence, result_array, landmark_list, la
 
 
 def detect_orientation(landmark_list, handedness="Right"):
-    """Simple orientation detection"""
+    """
+    Fixed orientation detection with correct front/back handling for right hand
+    """
     if len(landmark_list) < 21:
         return "unknown"
 
@@ -842,10 +846,15 @@ def detect_orientation(landmark_list, handedness="Right"):
     # Find the major axis
     axis = np.argmax(np.abs([nx, ny, nz]))
 
-    # For z-axis (front/back)
+    # For z-axis (front/back) - FIXED for right hand
     if axis == 2:
-        # Primarily facing toward/away from camera
-        return "back" if nz > 0 else "front"
+        if handedness == "Right":
+            # For right hand: REVERSE the mapping
+            # When nz > 0, it's actually "front" for right hand
+            return "front" if nz > 0 else "back"
+        else:
+            # For left hand: Keep the original mapping
+            return "back" if nz > 0 else "front"
 
     # For y-axis (up/down)
     elif axis == 1:
@@ -1386,9 +1395,11 @@ def main():
 
                 # Update recognizer with components from first hand only
                 # Only use the first detected hand for gesture recognition
+                # Update recognizer with components from first hand only
                 if hand_idx == 0 and handshape_text:
                     # Check if the hand is stationary for gesture recording
                     is_stationary = (movement == "stationary")
+                    # Call update without location parameter
                     recognizer.update(handshape_text, orientation, movement, confidence, is_stationary)
 
         # Handle no-hands detection

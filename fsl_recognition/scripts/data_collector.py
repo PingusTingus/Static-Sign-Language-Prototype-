@@ -1050,7 +1050,9 @@ def improve_prediction(hand_sign_id, confidence, result_array, landmark_list, la
 
 
 def detect_orientation(landmark_list, handedness="Right"):
-    """Simple orientation detection"""
+    """
+    Fixed orientation detection with correct front/back handling for right hand
+    """
     if len(landmark_list) < 21:
         return "unknown"
 
@@ -1083,10 +1085,15 @@ def detect_orientation(landmark_list, handedness="Right"):
     # Find the major axis
     axis = np.argmax(np.abs([nx, ny, nz]))
 
-    # For z-axis (front/back)
+    # For z-axis (front/back) - FIXED for right hand
     if axis == 2:
-        # Primarily facing toward/away from camera
-        return "back" if nz > 0 else "front"
+        if handedness == "Right":
+            # For right hand: REVERSE the mapping
+            # When nz > 0, it's actually "front" for right hand
+            return "front" if nz > 0 else "back"
+        else:
+            # For left hand: Keep the original mapping
+            return "back" if nz > 0 else "front"
 
     # For y-axis (up/down)
     elif axis == 1:
